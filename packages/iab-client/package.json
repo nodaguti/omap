@@ -20,9 +20,9 @@
     "test": "uvu -r ts-node/register tests"
   },
   "dependencies": {
-    "@ygoto3/omap-core": "^0.0.4",
-    "@ygoto3/omap-vmap-parser": "^0.0.1",
-    "@ygoto3/omap-vast-parser": "^0.0.3"
+    "@ygoto3/omap-core": "file:../core",
+    "@ygoto3/omap-vmap-parser": "file:../vmap-parser",
+    "@ygoto3/omap-vast-parser": "file:../vast-parser"
   },
   "devDependencies": {
     "@types/xmldom": "^0.1.34",
