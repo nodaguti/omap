@@ -19,9 +19,6 @@
     "build": "tsc -p tsconfig.json",
     "test": "uvu -r ts-node/register tests"
   },
-  "dependencies": {
-    "xml-js": "^1.6.11"
-  },
   "devDependencies": {
     "@types/xmldom": "^0.1.34",
     "buffer": "^6.0.3",
