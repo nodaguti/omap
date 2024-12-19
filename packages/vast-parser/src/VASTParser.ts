@@ -97,14 +97,18 @@ export default class VASTParser {
                     const bitrate = mediaFile.getAttribute('bitrate');
                     const minBitrate = mediaFile.getAttribute('minBitrate');
                     const maxBitrate = mediaFile.getAttribute('maxBitrate');
+
+                    if (delivery == null || !['progressive', 'streaming'].includes(delivery)) return null;
+                    if (type == null || type.length === 0) return null;
+
                     const newMediaFile = new MediaFile(
                         url || '',
-                        delivery || '',
-                        type || '',
+                        delivery,
+                        type,
                         width ? parseInt(width) : 0,
                         height ? parseInt(height) : 0,
-                        codec || '',
-                        id || '',
+                        codec || undefined,
+                        id || undefined,
                         bitrate ? parseInt(bitrate) : void 0,
                         minBitrate ? parseInt(minBitrate) : void 0,
                         maxBitrate ? parseInt(maxBitrate) : void 0
@@ -116,9 +120,9 @@ export default class VASTParser {
                 const trackingEvents = mapArrayOrElem(trackingNodes, tracking => {
                     if (tracking.parentNode?.nodeName.toLowerCase() !== 'trackingevents') return null;
 
-                    const event = tracking.getAttribute('event') || '';
+                    const event = tracking.getAttribute('event');
                     const url = tracking.textContent || '';
-                    return new Tracking(url, event);
+                    return new Tracking(url, event || undefined);
                 });
 
                 const adParameters = linearNode.getElementsByTagName('AdParameters').item(0)?.textContent || '';
@@ -143,13 +147,18 @@ export default class VASTParser {
                 return new Impression(impression.textContent);
             });
             const inLine = new InLine('', '', impressions, creatives, void 0, void 0, void 0, void 0, void 0, errors, extensions);
-            const adId = ad.getAttribute('id') || '';
+
+            const adId = ad.getAttribute('id');
             const adSequenceAttr = ad.getAttribute('sequence');
             const adSequence = adSequenceAttr ? parseInt(adSequenceAttr) : void 0;
-            const newAd = new Ad(adId, adSequence, inLine);
+            const newAd = new Ad(adId || undefined, adSequence, inLine);
             return newAd;
         });
-        const newVast = new VAST(vastRoot.getAttribute('version') || '', ads);
+        const version = vastRoot.getAttribute('version');
+
+        if (version == null || version.length === 0) return null;
+
+        const newVast = new VAST(version, ads);
         return newVast;
     }
 

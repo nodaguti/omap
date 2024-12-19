@@ -56,13 +56,20 @@ export default class VMAPParser {
                 }
                 return null;
             });
+            const timeOffset = adBreak.getAttribute('timeOffset');
+            const breakType = adBreak.getAttribute('breakType');
+            const breakId = adBreak.getAttribute('breakId');
+            const repeatAfter = adBreak.getAttribute('repeatAfter') || '';
+
+            if (timeOffset == null || timeOffset.length === 0) return null;
+            if (breakType == null || breakType.length === 0) return null;
 
             const newAdBreak = new AdBreak(
-                adBreak.getAttribute('timeOffset') || '',
-                adBreak.getAttribute('breakType') || '',
+                timeOffset,
+                breakType,
                 adSources,
-                adBreak.getAttribute('breakId') || '',
-                adBreak.getAttribute('repeatAfter') || '',
+                breakId || undefined,
+                repeatAfter,
             );
             return newAdBreak;
         });
